@@ -222,27 +222,32 @@ body::after {
 .sprout-pop.visible { transform: scale(1) rotate(0); }
 
 /* ═══════════════════════════════════════════════
-   PHASE 3 — THE SOLUTION
+   PHASE 3 — THE SOLUTION (RESPONSIVE GRID)
 ═══════════════════════════════════════════════ */
 #phase-solution {
   background:
     radial-gradient(ellipse 50% 60% at 15% 50%, rgba(6,199,85,.07) 0%, transparent 60%),
     radial-gradient(ellipse 40% 40% at 85% 30%, rgba(255,193,7,.05) 0%, transparent 50%),
     var(--bg);
-  flex-direction: row;
-  align-items: center; justify-content: center;
-  padding: 70px 5vw 56px; gap: 4vw;
+  display: grid;
+  grid-template-columns: minmax(0, 480px) clamp(190px, 22vw, 275px);
+  grid-template-areas:
+    "titles phone"
+    "features phone";
+  gap: 15px 4vw;
+  align-content: center; justify-content: center;
+  padding: 70px 5vw 56px;
   overflow-y: auto;
 }
 
-/* Left panel */
-.sol-left {
-  flex: 1; min-width: 0; max-width: 480px;
-  display: flex; flex-direction: column; gap: 18px;
+/* Left Panel: Titles & Subtitle */
+.sol-titles {
+  grid-area: titles; align-self: end;
+  display: flex; flex-direction: column; gap: 12px;
   opacity: 0; transform: translateX(-28px);
   transition: opacity .7s ease, transform .7s ease;
 }
-.sol-left.visible { opacity: 1; transform: none; }
+.sol-titles.visible { opacity: 1; transform: none; }
 
 .sol-eyebrow {
   display: inline-flex; align-items: center; gap: 7px;
@@ -274,36 +279,37 @@ body::after {
   color: var(--gray); font-weight: 300; line-height: 1.65;
 }
 
-.feature-list { display: flex; flex-direction: column; gap: 8px; }
+/* Left Panel: Features */
+.feature-list {
+  grid-area: features; align-self: start;
+  display: flex; flex-direction: column; gap: 8px;
+}
 .feature-card {
   display: flex; align-items: center; gap: 12px;
   background: rgba(255,255,255,.03);
   border: 1px solid rgba(255,255,255,.07);
   border-radius: 12px; padding: 11px 14px;
   opacity: 0; transform: translateX(-14px);
-  transition: opacity .45s ease, transform .45s ease,
-              background .2s, border-color .2s;
+  transition: opacity .45s ease, transform .45s ease, background .2s, border-color .2s;
 }
 .feature-card.visible { opacity: 1; transform: none; }
 .feature-card:hover   { background: rgba(6,199,85,.06); border-color: rgba(6,199,85,.2); }
 .feature-icon  { font-size: 20px; flex-shrink: 0; }
 .feature-text  { display: flex; flex-direction: column; gap: 1px; min-width: 0; }
 .feature-name  { font-family: var(--font-display); font-size: 13px; font-weight: 600; color: var(--white); }
-.feature-desc  { font-size: 11px; font-weight: 300; color: var(--gray); }
+.feature-desc  { font-size: 11px; font-weight: 300; color: var(--gray); line-height: 1.3;}
 .feature-tag {
   margin-left: auto; flex-shrink: 0;
   font-size: 9px; letter-spacing: .1em; text-transform: uppercase;
-  color: var(--line-green);
-  background: rgba(6,199,85,.1);
-  border: 1px solid rgba(6,199,85,.2);
-  border-radius: 100px; padding: 2px 9px;
+  color: var(--line-green); background: rgba(6,199,85,.1);
+  border: 1px solid rgba(6,199,85,.2); border-radius: 100px; padding: 2px 9px;
   font-family: var(--font-display);
 }
 
-/* Right: Phone */
+/* Right Panel: Phone Mockup */
 .sol-right {
-  flex-shrink: 0;
-  width: clamp(190px,22vw,275px);
+  grid-area: phone; align-self: center; justify-self: center;
+  width: 100%; max-width: 275px;
   opacity: 0; transform: translateY(22px) scale(.96);
   transition: opacity .7s ease .2s, transform .7s ease .2s;
   position: relative;
@@ -318,18 +324,14 @@ body::after {
 
 .phone {
   width: 100%; aspect-ratio: 9/19.5;
-  background: #0a1a0f;
-  border-radius: 36px;
+  background: #0a1a0f; border-radius: 36px;
   border: 2px solid rgba(6,199,85,.2);
-  box-shadow: 0 36px 90px rgba(0,0,0,.8),
-              0 0 0 1px rgba(6,199,85,.07),
-              inset 0 1px 0 rgba(255,255,255,.05);
+  box-shadow: 0 36px 90px rgba(0,0,0,.8), 0 0 0 1px rgba(6,199,85,.07), inset 0 1px 0 rgba(255,255,255,.05);
   position: relative; overflow: hidden;
 }
 .phone-island {
   position: absolute; top: 12px; left: 50%;
-  transform: translateX(-50%);
-  width: 80px; height: 7px;
+  transform: translateX(-50%); width: 80px; height: 7px;
   background: #000; border-radius: 4px; z-index: 10;
 }
 .phone-screen {
@@ -338,50 +340,33 @@ body::after {
 }
 .ln-header {
   background: linear-gradient(135deg,#06C755,#04A843);
-  padding: 9px 12px;
-  display: flex; align-items: center; gap: 9px;
+  padding: 9px 12px; display: flex; align-items: center; gap: 9px;
   box-shadow: 0 2px 10px rgba(6,199,85,.3);
 }
 .ln-avatar {
-  width: 30px; height: 30px; border-radius: 50%;
-  background: #fff;
+  width: 30px; height: 30px; border-radius: 50%; background: #fff;
   display: flex; align-items: center; justify-content: center;
-  font-family: var(--font-display);
-  font-size: 13px; font-weight: 800; color: #06C755; flex-shrink: 0;
+  font-family: var(--font-display); font-size: 13px; font-weight: 800; color: #06C755; flex-shrink: 0;
 }
 .ln-name   { font-family: var(--font-display); font-size: 12px; font-weight: 600; color: #fff; }
 .ln-status { font-size: 8px; color: rgba(255,255,255,.65); }
 .ln-body {
-  flex: 1; padding: 9px;
-  display: flex; flex-direction: column; gap: 6px;
+  flex: 1; padding: 9px; display: flex; flex-direction: column; gap: 6px;
   overflow: hidden; background: #0d1f12;
 }
 .bubble {
-  max-width: 88%; padding: 7px 10px;
-  border-radius: 13px; font-size: 9px; line-height: 1.5;
-  opacity: 0; transform: translateY(6px);
-  transition: opacity .35s ease, transform .35s ease;
+  max-width: 88%; padding: 7px 10px; border-radius: 13px; font-size: 9px; line-height: 1.5;
+  opacity: 0; transform: translateY(6px); transition: opacity .35s ease, transform .35s ease;
   font-family: var(--font-body);
 }
 .bubble.show { opacity: 1; transform: none; }
-.bubble.bot  {
-  background: #162b1c; border: 1px solid rgba(6,199,85,.1);
-  color: #c8e6c9; border-bottom-left-radius: 3px; align-self: flex-start;
-}
-.bubble.user {
-  background: linear-gradient(135deg,#06C755,#04A843);
-  color: #fff; font-weight: 500;
-  border-bottom-right-radius: 3px; align-self: flex-end;
-}
-.bubble.card {
-  background: #112518; border: 1px solid rgba(6,199,85,.16);
-  border-radius: 13px; align-self: flex-start; padding: 9px 11px;
-}
+.bubble.bot  { background: #162b1c; border: 1px solid rgba(6,199,85,.1); color: #c8e6c9; border-bottom-left-radius: 3px; align-self: flex-start; }
+.bubble.user { background: linear-gradient(135deg,#06C755,#04A843); color: #fff; font-weight: 500; border-bottom-right-radius: 3px; align-self: flex-end; }
+.bubble.card { background: #112518; border: 1px solid rgba(6,199,85,.16); border-radius: 13px; align-self: flex-start; padding: 9px 11px; }
 .card-head { font-family: var(--font-display); font-size: 9px; font-weight: 600; color: #69F0AE; margin-bottom: 3px; }
 .card-body { font-size: 8px; color: #6a9e75; line-height: 1.6; }
 .ln-footer {
-  padding: 6px 9px; background: #0a1a0f;
-  border-top: 1px solid rgba(6,199,85,.07);
+  padding: 6px 9px; background: #0a1a0f; border-top: 1px solid rgba(6,199,85,.07);
   display: flex; gap: 4px; flex-wrap: wrap;
 }
 .sdg-pill {
@@ -398,14 +383,11 @@ body::after {
    PHASE 4 — COUNTDOWN
 ═══════════════════════════════════════════════ */
 #phase-countdown {
-  background:
-    radial-gradient(ellipse 50% 50% at 50% 50%, rgba(6,199,85,.09) 0%, transparent 65%),
-    var(--bg);
+  background: radial-gradient(ellipse 50% 50% at 50% 50%, rgba(6,199,85,.09) 0%, transparent 65%), var(--bg);
   gap: 22px; text-align: center; padding: 80px 28px 60px;
 }
 .cd-label {
-  font-family: var(--font-display);
-  font-size: clamp(11px,1.3vw,13px); font-weight: 400;
+  font-family: var(--font-display); font-size: clamp(11px,1.3vw,13px); font-weight: 400;
   letter-spacing: .22em; text-transform: uppercase; color: var(--gray2);
   opacity: 0; animation: fadeUp .6s ease forwards .2s;
 }
@@ -416,30 +398,23 @@ body::after {
 .cd-ring-svg { width: 100%; height: 100%; transform: rotate(-90deg); }
 .cd-ring-track { fill: none; stroke: rgba(255,255,255,.05); stroke-width: 4; }
 .cd-ring-prog {
-  fill: none; stroke: var(--line-green); stroke-width: 4;
-  stroke-linecap: round;
+  fill: none; stroke: var(--line-green); stroke-width: 4; stroke-linecap: round;
   filter: drop-shadow(0 0 8px rgba(6,199,85,.8));
-  stroke-dasharray: 502; stroke-dashoffset: 502;
-  transition: stroke-dashoffset 1s linear;
+  stroke-dasharray: 502; stroke-dashoffset: 502; transition: stroke-dashoffset 1s linear;
 }
 .cd-number {
-  position: absolute; inset: 0;
-  display: flex; align-items: center; justify-content: center;
-  font-family: var(--font-display);
-  font-size: clamp(52px,10vw,68px); font-weight: 800; color: var(--white);
-  text-shadow: 0 0 28px rgba(6,199,85,.35);
-  transition: transform .12s cubic-bezier(.34,1.56,.64,1);
+  position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-display); font-size: clamp(52px,10vw,68px); font-weight: 800; color: var(--white);
+  text-shadow: 0 0 28px rgba(6,199,85,.35); transition: transform .12s cubic-bezier(.34,1.56,.64,1);
 }
 .cd-number.tick { transform: scale(1.18); }
 .cd-sublabel {
-  font-family: var(--font-display);
-  font-size: clamp(14px,2vw,22px); font-weight: 600;
+  font-family: var(--font-display); font-size: clamp(14px,2vw,22px); font-weight: 600;
   color: var(--line-green); letter-spacing: .03em;
   opacity: 0; animation: fadeUp .6s ease forwards .6s;
 }
 .cd-tagline {
-  font-size: 12px; color: var(--gray2);
-  font-weight: 300; letter-spacing: .08em;
+  font-size: 12px; color: var(--gray2); font-weight: 300; letter-spacing: .08em;
   opacity: 0; animation: fadeUp .6s ease forwards .8s;
 }
 .cd-sdgs {
@@ -447,76 +422,60 @@ body::after {
   opacity: 0; animation: fadeUp .6s ease forwards 1s;
 }
 .cd-sdg {
-  font-family: var(--font-display);
-  font-size: 11px; font-weight: 600;
+  font-family: var(--font-display); font-size: 11px; font-weight: 600;
   padding: 5px 13px; border-radius: 100px; letter-spacing: .05em;
 }
 .cd-sdg.g12 { background: #FFB300; color: #000; }
 .cd-sdg.g8  { background: #C8102E; color: #fff; }
 
-/* ═══════════════════════════════════════════════
-   SHARED ANIMATION
-═══════════════════════════════════════════════ */
 @keyframes fadeUp {
   from { opacity:0; transform:translateY(16px); }
   to   { opacity:1; transform:translateY(0); }
 }
 
 /* ═══════════════════════════════════════════════
-   MOBILE  ≤ 768px
+   MOBILE  ≤ 768px (THE FIX)
 ═══════════════════════════════════════════════ */
 @media (max-width: 768px) {
-
   .badge-text { font-size: 9px; letter-spacing: .06em; }
-
-  /* Phase 1 */
   #phase-crisis { padding: 68px 20px 52px; }
   .crisis-warning { padding: 8px 16px; font-size: 11px; }
 
-  /* Phase 3 — stack vertically */
+  /* Fully vertical stacked layout for mobile */
   #phase-solution {
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
-    padding: 66px 16px 60px;
-    gap: 16px;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
+    display: flex; flex-direction: column;
+    justify-content: flex-start; align-items: center;
+    padding: 66px 16px 60px; gap: 20px;
+  }
+  
+  /* Order 1: Headlines */
+  .sol-titles { 
+    order: 1; align-items: center; text-align: center; 
+    transform: translateY(14px); width: 100%;
+  }
+  .sol-headline { font-size: clamp(24px, 7.5vw, 32px); }
+  .sol-subline { display: none; } /* Hide description to save space on mobile */
+
+  /* Order 2: Phone Mockup */
+  .sol-right { 
+    order: 2; width: clamp(140px, 45vw, 220px); margin: 5px 0;
   }
 
-  /* Order: headline → phone → cards */
-  .sol-left {
-    order: 1; max-width: 100%;
-    transform: translateY(14px); /* fade from bottom on mobile */
-    gap: 12px;
+  /* Order 3: Feature Cards */
+  .feature-list { 
+    order: 3; width: 100%; max-width: 400px; 
   }
-  .sol-left.visible { transform: none; }
+  .feature-card { padding: 12px; align-items: flex-start; }
+  .feature-name { font-size: 14px; }
+  .feature-desc { font-size: 11px; }
+  .feature-tag  { display: none; }
 
-  /* Hide subline on very small screens to save space */
-  .sol-subline { display: none; }
-
-  .sol-right {
-    order: 2;
-    width: clamp(130px,40vw,190px);
-    transform: scale(.95);
-  }
-  .sol-right.visible { transform: none; }
-
-  .feature-list { order: 3; width: 100%; }
-  .feature-card { padding: 9px 12px; }
-  .feature-name { font-size: 12px; }
-  .feature-desc { font-size: 10px; }
-  .feature-tag  { display: none; } /* save horizontal space */
-
-  .sol-headline { font-size: clamp(20px,6.5vw,30px); }
-
-  /* Phase 4 */
   #phase-countdown { padding: 70px 20px 52px; gap: 18px; }
 }
 
 @media (max-width: 390px) {
   .crisis-number { font-size: 54px; }
-  .sol-right     { width: 120px; }
+  .sol-right     { width: 130px; }
 }
 
 </style>
@@ -538,7 +497,6 @@ body::after {
 
 <div id="tap-hint">Tap anywhere to skip →</div>
 
-<!-- ═══ PHASE 1 — CRISIS ════════════════════════ -->
 <section class="phase active" id="phase-crisis">
   <p class="crisis-eyebrow">Since this presentation began&hellip;</p>
   <div class="crisis-number" id="crisis-num">0</div>
@@ -556,50 +514,15 @@ body::after {
   </div>
 </section>
 
-<!-- ═══ PHASE 3 — SOLUTION ══════════════════════ -->
 <section class="phase" id="phase-solution">
 
-  <div class="sol-left" id="sol-left">
+  <div class="sol-titles" id="sol-titles">
     <div class="sol-eyebrow">💡 Our Solution</div>
     <div class="sol-headline">Connecting<br><em>Surplus</em> to Demand</div>
     <p class="sol-subline">
       Built entirely on LINE — the app everyone already has.<br>
       No download. No friction. Instant impact.
     </p>
-    <div class="feature-list">
-      <div class="feature-card" id="fc-0">
-        <span class="feature-icon">📡</span>
-        <div class="feature-text">
-          <span class="feature-name">U-Dee Radar</span>
-          <span class="feature-desc">Real-time surplus food alerts for students &amp; staff</span>
-        </div>
-        <span class="feature-tag">Live</span>
-      </div>
-      <div class="feature-card" id="fc-1">
-        <span class="feature-icon">🏪</span>
-        <div class="feature-text">
-          <span class="feature-name">U-Dee Merchant</span>
-          <span class="feature-desc">Vendor dashboard &amp; flash-deal broadcasting</span>
-        </div>
-        <span class="feature-tag">Vendor</span>
-      </div>
-      <div class="feature-card" id="fc-2">
-        <span class="feature-icon">🍽️</span>
-        <div class="feature-text">
-          <span class="feature-name">Kin-Dee Clean Plate</span>
-          <span class="feature-desc">AI empty-plate verification — earn &amp; redeem points</span>
-        </div>
-        <span class="feature-tag">AI</span>
-      </div>
-      <div class="feature-card" id="fc-3">
-        <span class="feature-icon">📚</span>
-        <div class="feature-text">
-          <span class="feature-name">Kin-Dee Hub</span>
-          <span class="feature-desc">SDG &amp; nutrition knowledge center for campus</span>
-        </div>
-        <span class="feature-tag">SDGs</span>
-      </div>
-    </div>
   </div>
 
   <div class="sol-right" id="sol-right">
@@ -635,9 +558,43 @@ body::after {
     </div>
   </div>
 
+  <div class="feature-list" id="feature-list">
+    <div class="feature-card" id="fc-0">
+      <span class="feature-icon">📡</span>
+      <div class="feature-text">
+        <span class="feature-name">U-Dee Radar</span>
+        <span class="feature-desc">Real-time surplus food alerts for students &amp; staff</span>
+      </div>
+      <span class="feature-tag">Live</span>
+    </div>
+    <div class="feature-card" id="fc-1">
+      <span class="feature-icon">🏪</span>
+      <div class="feature-text">
+        <span class="feature-name">U-Dee Merchant</span>
+        <span class="feature-desc">Vendor dashboard &amp; flash-deal broadcasting</span>
+      </div>
+      <span class="feature-tag">Vendor</span>
+    </div>
+    <div class="feature-card" id="fc-2">
+      <span class="feature-icon">🍽️</span>
+      <div class="feature-text">
+        <span class="feature-name">Kin-Dee Clean Plate</span>
+        <span class="feature-desc">AI empty-plate verification — earn &amp; redeem points</span>
+      </div>
+      <span class="feature-tag">AI</span>
+    </div>
+    <div class="feature-card" id="fc-3">
+      <span class="feature-icon">📚</span>
+      <div class="feature-text">
+        <span class="feature-name">Kin-Dee Hub</span>
+        <span class="feature-desc">SDG &amp; nutrition knowledge center for campus</span>
+      </div>
+      <span class="feature-tag">SDGs</span>
+    </div>
+  </div>
+
 </section>
 
-<!-- ═══ PHASE 4 — COUNTDOWN ═════════════════════ -->
 <section class="phase" id="phase-countdown">
   <p class="cd-label">Get ready</p>
   <div class="cd-ring-wrap">
@@ -656,20 +613,6 @@ body::after {
   </div>
 </section>
 
-<!-- ═══════════════════════════════════════════════
-     JAVASCRIPT
-     Timeline (auto):
-       0s    — Crisis counter, fast
-       6s    — Slows down (yellow bar)
-       7.5s  — Drops to zero, green flash
-       9.5s  — Phase 3 solution
-       22.5s — Phase 4 countdown
-       25.5s — Done ▶
-
-     Tap to skip:
-       Phase 1 tap → jump to Phase 3 immediately
-       Phase 3 tap → jump to Phase 4 immediately
-═══════════════════════════════════════════════ -->
 <script>
 const $  = id => document.getElementById(id);
 
@@ -694,13 +637,14 @@ let crisisRAF     = null;
 let crisisTimers  = [];
 let solutionTimers= [];
 
-// ── PHASE 1: Crisis counter ───────────────────────────────
-// Timing (all in ms)
-const T_FAST   = 6000;  // fast climb
-const T_SLOW   = 1500;  // decelerate
-const T_REDUCE = 800;   // drop to 0
-const RATE     = 3500;  // kg/sec FAO
-const MAX_VAL  = RATE * (T_FAST / 1000); // 21,000 kg
+// ── PHASE 1: Crisis counter (Reduced Timing) ──────────────
+const T_FAST   = 4000;  // 4 seconds fast climb
+const T_SLOW   = 1000;  // 1 second decelerate
+const T_REDUCE = 600;   // 0.6 seconds drop to 0
+// Total animation time = 5.6 seconds
+
+const RATE     = 3500;  
+const MAX_VAL  = RATE * (T_FAST / 1000); 
 
 const numEl  = $('crisis-num');
 const barEl  = $('crisis-bar');
@@ -708,42 +652,10 @@ const warnEl = $('crisis-warning');
 
 let counterVal = 0, peakVal = 0, cPhase = 'fast', cStart = 0;
 
-function startCrisis(ts) { cStart = ts; crisisRAF = requestAnimationFrame(tickCrisis); }
-
-function tickCrisis(now) {
-  const dt = now - cStart;
-
-  if (cPhase === 'fast') {
-    const t = Math.min(dt / T_FAST, 1);
-    counterVal = t * t * MAX_VAL;
-    barEl.style.width = (t * 100) + '%';
-    if (dt >= T_FAST) {
-      peakVal = counterVal; cPhase = 'slow'; cStart = now;
-      barEl.classList.add('slowing');
-      warnEl.style.animation = 'none';
-      warnEl.style.opacity   = '1';
-    }
-  } else if (cPhase === 'slow') {
-    const t = Math.min(dt / T_SLOW, 1);
-    counterVal += RATE * (1 - t * 0.9) * (1/60);
-    if (counterVal > peakVal) peakVal = counterVal;
-    barEl.style.width = Math.min((counterVal / MAX_VAL) * 100, 100) + '%';
-    if (dt >= T_SLOW) { cPhase = 'reduce'; cStart = now; }
-  } else if (cPhase === 'reduce') {
-    const t = Math.min(dt / T_REDUCE, 1);
-    counterVal = peakVal * (1 - t * (2 - t));
-    barEl.style.width = Math.max((counterVal / MAX_VAL) * 100, 0) + '%';
-    if (dt >= T_REDUCE) { cPhase = 'done'; finishCrisis(); }
-  }
-
-  numEl.textContent = fmt(counterVal);
-  if (cPhase !== 'done') crisisRAF = requestAnimationFrame(tickCrisis);
-}
+function startCrisis(ts) { cStart = ts; crisisRAF = requestAnimationFrame(tickCrisisAuto); }
 
 function finishCrisis() {
-  // Cancel any in-flight RAF
   if (crisisRAF) cancelAnimationFrame(crisisRAF);
-
   counterVal = 0;
   numEl.textContent = '0';
   numEl.classList.add('green');
@@ -757,21 +669,10 @@ function finishCrisis() {
   $('warning-text').textContent = '✅ Connecting surplus food to those in need.';
 }
 
-function skipCrisis() {
-  if (currentPhase !== 'crisis') return;
-  crisisTimers.forEach(clearTimeout);
-  crisisTimers = [];
-  finishCrisis();
-  startSolution();
-}
-
-// auto-boot: after counter finishes → startSolution after 2s
-// This is triggered inside finishCrisis when called by tickCrisis (not skip)
-// We use a flag to distinguish
-let crisisCalledByAuto = false;
-
 function tickCrisisAuto(now) {
+  if (cStart === 0) cStart = now;
   const dt = now - cStart;
+  
   if (cPhase === 'fast') {
     const t = Math.min(dt / T_FAST, 1);
     counterVal = t * t * MAX_VAL;
@@ -795,16 +696,49 @@ function tickCrisisAuto(now) {
     if (dt >= T_REDUCE) {
       cPhase = 'done';
       finishCrisis();
-      // Auto-advance to solution
       const tid = setTimeout(startSolution, 2000);
       crisisTimers.push(tid);
-      return; // stop RAF
+      return; 
     }
   }
 
   numEl.textContent = fmt(counterVal);
   crisisRAF = requestAnimationFrame(tickCrisisAuto);
 }
+
+// ── MANUAL OVERRIDE (TAP TO SKIP) ─────────────────────────
+function skipCrisis() {
+  if (currentPhase !== 'crisis') return;
+  crisisTimers.forEach(clearTimeout);
+  if (crisisRAF) cancelAnimationFrame(crisisRAF);
+  crisisTimers = [];
+  
+  finishCrisis();
+  setTimeout(startSolution, 1200); // Give it 1.2s to show the "0" before sliding to solution
+}
+
+function skipSolution() {
+  if (currentPhase !== 'solution') return;
+  solutionTimers.forEach(clearTimeout);
+  solutionTimers = [];
+  
+  // Make sure everything is instantly visible just in case
+  $('sol-titles').classList.add('visible');
+  $('sol-right').classList.add('visible');
+  [0,1,2,3].forEach(i => $('fc-'+i).classList.add('visible'));
+  [0,1,2,3,4].forEach(i => $('b'+i).classList.add('show'));
+  [0,1,2].forEach(i => $('pill-'+i).classList.add('show'));
+
+  startCountdown();
+}
+
+function handleTap() {
+  if (currentPhase === 'crisis') skipCrisis();
+  else if (currentPhase === 'solution') skipSolution();
+}
+
+document.addEventListener('click', handleTap);
+document.addEventListener('touchend', handleTap, { passive: true });
 
 // ── PHASE 3: Solution ─────────────────────────────────────
 const SOLUTION_HOLD = 13000;
@@ -813,16 +747,16 @@ function startSolution() {
   if (currentPhase === 'solution' || currentPhase === 'countdown' || currentPhase === 'done') return;
   currentPhase = 'solution';
 
-  crisisTimers.forEach(clearTimeout); // cancel leftover crisis timers
+  crisisTimers.forEach(clearTimeout);
   crisisTimers = [];
 
   flash();
   showPhase('phase-solution');
   setDot(1);
-  $('tap-hint').style.opacity = '1'; // re-show hint
+  $('tap-hint').style.opacity = '1'; 
 
   const t0 = setTimeout(() => {
-    $('sol-left').classList.add('visible');
+    $('sol-titles').classList.add('visible');
     const t1 = setTimeout(() => $('sol-right').classList.add('visible'), 180);
     solutionTimers.push(t1);
   }, 150);
@@ -845,20 +779,8 @@ function startSolution() {
   solutionTimers.push(autoT);
 }
 
-function skipSolution() {
-  if (currentPhase !== 'solution') return;
-  solutionTimers.forEach(clearTimeout);
-  solutionTimers = [];
-  // Reveal everything instantly
-  ['sol-left','sol-right'].forEach(id => $(id).classList.add('visible'));
-  [0,1,2,3].forEach(i => $('fc-'+i).classList.add('visible'));
-  [0,1,2,3,4].forEach(i => $('b'+i).classList.add('show'));
-  [0,1,2].forEach(i => $('pill-'+i).classList.add('show'));
-  startCountdown();
-}
-
 // ── PHASE 4: Countdown ring ───────────────────────────────
-const CIRC = 2 * Math.PI * 80; // 502.65
+const CIRC = 2 * Math.PI * 80; 
 
 function startCountdown() {
   if (currentPhase === 'countdown' || currentPhase === 'done') return;
@@ -909,18 +831,8 @@ function startCountdown() {
   }));
 }
 
-// ── Global tap / click handler ────────────────────────────
-function handleTap() {
-  if (currentPhase === 'crisis')   skipCrisis();
-  else if (currentPhase === 'solution') skipSolution();
-  // Countdown: no skip
-}
-
-document.addEventListener('click',    handleTap);
-document.addEventListener('touchend', handleTap, { passive: true });
-
 // ── Boot ──────────────────────────────────────────────────
-requestAnimationFrame(tickCrisisAuto);
+requestAnimationFrame((ts) => startCrisis(ts));
 </script>
 </body>
 </html>
